@@ -10,9 +10,25 @@ public class RegexSplit implements SplitUrlEvent {
 
   private String url;
   private SplitURL splitUrl;
+  /**
+   * A regular expression for matching the URL Ref: https://tools.ietf.org/html/rfc3986#appendix-B
+   */
   private final static String urlPattern =
       "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*)?)?(#(.*))?";
 
+  // Ref: https://tools.ietf.org/html/rfc3986#appendix-B
+  // ^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?
+  // 12 3 4 5 6 7 8 9
+
+  // $1 = http:
+  // $2 = http
+  // $3 = //www.ics.uci.edu
+  // $4 = www.ics.uci.edu
+  // $5 = /pub/ietf/uri/
+  // $6 = <undefined>
+  // $7 = <undefined>
+  // $8 = #Related
+  // $9 = Related
   public RegexSplit(String url) {
     this.url = url;
     splitUrl = new SplitURL();
@@ -24,7 +40,6 @@ public class RegexSplit implements SplitUrlEvent {
 
   @Override
   public void execute() throws Exception {
-    // System.out.println("Processsing RegEx split for given url:" + this.url);
     if (url == null || url.isEmpty()) {
       throw new Exception("Please enter the valid URL");
     }
